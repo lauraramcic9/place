@@ -1,0 +1,144 @@
+
+
+1. CRUD + datoteka
+   - dodajZaposlenika()     -> CREATE
+   - prikaziZaposlenike()   -> READ
+   - urediZaposlenika()     -> UPDATE
+   - obrisiZaposlenika()    -> DELETE
+   - fopen(DATOTEKA, "a"), fopen(DATOTEKA, "r"), fopen(DATOTEKA, "w")
+
+
+
+2. Primitivni tipovi
+   - int id;
+   - float placa;
+   - char ime[50];
+   - int trazeniID;
+   - int pronaden = 0;
+   - int brojac = 0;
+   - int n = 0;
+
+
+
+3. Slozeni tipovi (struct)
+   - typedef struct {
+         int id;
+         char ime[50];
+         float placa;
+     } Zaposlenik;
+
+
+
+4. typedef sa strukturama i enumom
+   - typedef struct { ... } Zaposlenik;
+   - typedef enum { DODAJ=1, PRIKAZ, UREDI, OBRISI, SORTIRAJ, IZLAZ } Izbornik;
+
+
+
+5. Imenovanje - camelCase konzistentno
+   - dodajZaposlenika, prikaziZaposlenike, urediZaposlenika, obrisiZaposlenika
+   - trazeniID, brojDodavanja, ukupnoDodanih
+   - DATOTEKA, DODAJ, PRIKAZ, UREDI, OBRISI, SORTIRAJ, IZLAZ
+
+
+
+6. static za globalne i lokalne varijable
+   - static int brojDodavanja = 0;   (globalna, vidljiva samo u funkcije.c)
+
+
+
+7. Organizacija izvornog koda
+   - funkcije.h   -> definicije struktura, enumova, deklaracije funkcija
+   - funkcije.c   -> implementacija svih funkcija
+   - main.c       -> ulazna tocka programa, izbornik
+
+
+
+8. extern za globalne varijable
+   - u funkcije.h:  extern int ukupnoDodanih;
+   - u funkcije.c:  int ukupnoDodanih = 0;   (definicija)
+   - koristi se u dodajZaposlenika() za brojanje ukupno dodanih
+
+
+
+9. inline funkcije
+   - inline void ocistiBuffer() {
+         while (getchar() != '\n');
+     }
+
+
+
+10. Izbornik
+    - do { ... } while (izbor != IZLAZ);
+    - switch (izbor) { case DODAJ: ... case PRIKAZ: ... itd. }
+
+
+
+11. enum za izbornik
+    - typedef enum { DODAJ=1, PRIKAZ, UREDI, OBRISI, SORTIRAJ, IZLAZ } Izbornik;
+    - switch (izbor) { case DODAJ: ... case IZLAZ: ... }
+
+
+
+12. Pokazivaci gdje su potrebni
+    - Zaposlenik* z = malloc(sizeof(Zaposlenik));
+    - FILE* fp = fopen(DATOTEKA, "r");
+    - FILE* temp = fopen("temp.txt", "w");
+    - Zaposlenik* niz = malloc(n * sizeof(Zaposlenik));
+
+
+
+13. Upotreba struktura i funkcija
+    - sve funkcije primaju/koriste Zaposlenik struct
+    - z->id, z->ime, z->placa   (pristup preko pokazivaca)
+    - niz[i].id, niz[i].ime     (pristup preko niza)
+
+
+14. Zastita parametara (validacija unosa)
+    - if (scanf("%d", &z->id) != 1 || z->id <= 0)
+    - if (scanf("%49s", z->ime) != 1)
+    - if (scanf("%f", &z->placa) != 1 || z->placa < 0)
+    - if (z == NULL) -> provjera alokacije
+    - if (fp == NULL) -> provjera datoteke
+
+
+
+15. static zauzeta polja, bez VLA
+    - char ime[50];   -> fiksna velicina, nije VLA
+    - Zaposlenik temp;  -> lokalna varijabla fiksne velicine
+
+
+
+16. Dinamicko zauzimanje memorije
+    - Zaposlenik* z = malloc(sizeof(Zaposlenik));
+    - Zaposlenik* niz = malloc(n * sizeof(Zaposlenik));   (u sortiraj)
+
+
+17. malloc, calloc, realloc, free
+    - malloc:   Zaposlenik* z = malloc(sizeof(Zaposlenik));
+    - malloc:   Zaposlenik* niz = malloc(n * sizeof(Zaposlenik));
+    - free:     free(z);
+    - free:     free(niz);
+    [calloc i realloc nisu korišteni - pravilo kaze "neku od njih"]
+
+
+
+18. Sigurno brisanje memorije
+    - free(z);
+      z = NULL;
+    - free(niz);
+      niz = NULL;
+    (svaki pokazivac se postavlja na NULL nakon free)
+
+
+
+
+
+
+
+
+
+
+
+
+   
